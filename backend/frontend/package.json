@@ -25,6 +25,7 @@
     "react-table": "^7.7.0",
     "react-toastify": "^7.0.4",
     "react-toggle-button": "^2.2.0",
+    "reactjs-popup": "^2.0.5",
     "reactstrap": "8.4.1",
     "shortid": "^2.2.16",
     "webpack": "4.42.0"

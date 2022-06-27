@@ -27,7 +27,7 @@ export default function SignUpForm() {
     personalnumber: "",
     cellphone: "",
     yhida:"",
-    typevent:"",
+    typevent:'רק"מ',
     datevent:"",
     mikom:"",
     pirot:"",
@@ -45,18 +45,18 @@ export default function SignUpForm() {
     redirectToReferrer: false,
   });
 
-  const [units, setUnits] = useState([]);
+  // const [units, setUnits] = useState([]);
 
-  const loadUnits = () => {
-    axios
-      .get("http://localhost:8000/api/unit")
-      .then((response) => {
-        setUnits(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const loadUnits = () => {
+  //   axios
+  //     .get("http://localhost:8000/api/unit")
+  //     .then((response) => {
+  //       setUnits(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -107,6 +107,16 @@ export default function SignUpForm() {
         flag = false;
         ErrorReason += "פירוט ריק \n";
       }
+
+      if (!data.datevent) {
+        flag = false;
+        ErrorReason += "תאריך ריק \n";
+      }
+
+      if (document.getElementById("upfile").files.length === 0) {
+        flag = false;
+        ErrorReason += " מסמך תחקיר ריק \n";
+      }
   
     // if (data.password == "") {
     //   flag = false;
@@ -128,25 +138,26 @@ export default function SignUpForm() {
     // }
 
     if (flag == true) {
-      FixUser(event);
+      // FixUser(event);
+      SignUp(event);
     } else {
       toast.error(ErrorReason);
     }
   };
 
-  const FixUser = (event) => {
-    event.preventDefault();
-    if (data.role === "0") {
-      delete data.unitid;
-    }
-    if (data.role === "1") {
+  // const FixUser = (event) => {
+  //   event.preventDefault();
+  //   if (data.role === "0") {
+  //     delete data.unitid;
+  //   }
+  //   if (data.role === "1") {
 
-    }
-    if (data.role === "2") {
-      delete data.unitid;
-    }
-    SignUp(event);
-  };
+  //   }
+  //   if (data.role === "2") {
+  //     delete data.unitid;
+  //   }
+  //   SignUp(event);
+  // };
 
   const SignUp = (event) => {
     event.preventDefault();
@@ -220,9 +231,9 @@ export default function SignUpForm() {
     </div>
   );
 
-  useEffect(() => {
-    loadUnits();
-  }, []);
+  // useEffect(() => {
+  //   loadUnits();
+  // }, []);
 
   useEffect(() => {
     setData({ ...data, password: data.personalnumber });
@@ -333,6 +344,7 @@ export default function SignUpForm() {
                       placeholder="צירוף מסמך של התחקיר"
                       name="tahkirFile"
                       type="file"
+                      id="upfile"
                       value={data.tahkirFile}
                       onChange={handleChange}
                       accept=".pdf, .doc, .docx, .txt, .xls"
@@ -431,9 +443,9 @@ export default function SignUpForm() {
         <Row className="justify-content-center">
           <Col>
             {showLoading()}
+            {signUpForm()}
             {showSuccess()}
             {showError()}
-            {signUpForm()}
             {redirectUser()}
           </Col>
         </Row>

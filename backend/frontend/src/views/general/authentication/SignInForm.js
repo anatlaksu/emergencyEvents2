@@ -21,6 +21,9 @@ import {
 import axios from 'axios';
 import history from 'history.js'
 import { toast } from "react-toastify";
+import Popup from "reactjs-popup";
+
+
 
 // import tafkidipedialogo from "assets/img/tafkidipedialogo.png";
 
@@ -112,6 +115,31 @@ function Signin() {
     setValues({ ...values, password: values.personalnumber });
   }, [values.personalnumber])
 
+// const popupwindow= () =>(
+//   <Popup>
+//     <div>
+//         <div>
+//           {' '}
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+//           Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+//           delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+//           <br />
+//           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+//           commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+//           explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+//         </div>
+//         <button
+//             className="btn"
+//             onClick={() => {
+//               close();
+//             }}
+//           >
+//             close modal
+//           </button>
+//     </div>
+//   </Popup>
+// )
+
   const signInForm = () => (
     <>
       <Container >
@@ -160,6 +188,10 @@ function Signin() {
             </Card>
           </Col>
         </Row>
+        <div className="text-center">
+            <button onClick={() => { history.push(`/`) }} className="btn">שולחן הטנ"א שלי</button>
+        </div>
+
       </Container>
     </>
   )
@@ -170,6 +202,7 @@ function Signin() {
       <Container className="mt--8 pb-5">
         <Row className="justify-content-center">
           <Col>
+          {/* {popupwindow()} */}
             {/* {showSuccess()}
             {showError()} */}
             {signInForm()}

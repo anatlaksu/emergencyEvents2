@@ -19,6 +19,9 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 
+
+
+//adminhamaldb
 // Configure Mongo
 const db = "mongodb://localhost:27017/hamalsignin";
 
@@ -35,7 +38,100 @@ const hamalusers={
   password: String
 };
 
-const users=mongoose.model("users",hamalusers);
+
+
+
+
+//reportdb
+const dab = "mongodb://localhost:27017/reportDB";
+
+// Connect to Mongo with Mongoose
+mongoose.connect(
+    dab,
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+)
+    .then(() => console.log("Mongo connected"))
+    .catch(err => console.log(err));
+
+const reportschema={
+  name:Text,
+  lastname:Text,
+  personalnumber: String,
+  cellphone:Number,
+  yhida:String,
+  typevent:String,
+  datevent:Date,
+  mikom:String,
+  pirot:String
+};
+
+const Report=mongoose.model("Report",reportschema);
+
+let reports = [];
+
+app.post("/report", function(req,res){
+
+  const report= new Report({
+    name:req.body.name,
+    lastname:req.body.lastname,
+    personalnumber: req.body.personalnumber,
+    cellphone:req.body.cellphone,
+    yhida:req.body.yhida,
+    typevent:req.body.typevent,
+    datevent:req.body.datevent,
+    mikom:req.body.mikom,
+    pirot:req.body.pirot
+  });
+  report.save();
+  res.redirect("/signin");
+});
+
+
+
+//reportrekemdb
+const dabrek = "mongodb://localhost:27017/reportrekemDB";
+
+// Connect to Mongo with Mongoose
+mongoose.connect(
+    dabrek,
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+)
+    .then(() => console.log("Mongo connected"))
+    .catch(err => console.log(err));
+
+const reportrekemschema={
+  name:Text,
+  lastname:Text,
+  personalnumber: String,
+  cellphone:Number,
+  yhida:String,
+  typevent:String,
+  datevent:Date,
+  mikom:String,
+  pirot:String
+};
+
+const Reportrekem=mongoose.model("Reportrekem",reportrekemschema);
+
+let reportsrekem = [];
+
+app.post("/reportrekem", function(req,res){
+
+  const reportrekem= new Reportrekem({
+    name:req.body.name,
+    lastname:req.body.lastname,
+    personalnumber: req.body.personalnumber,
+    cellphone:req.body.cellphone,
+    yhida:req.body.yhida,
+    typevent:'רק"מ',
+    datevent:req.body.datevent,
+    mikom:req.body.mikom,
+    pirot:req.body.pirot
+  });
+  report.save();
+  res.redirect("/signin");
+});
+
 
 
 //user routes 

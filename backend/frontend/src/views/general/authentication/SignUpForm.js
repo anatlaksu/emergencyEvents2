@@ -45,18 +45,18 @@ export default function SignUpForm() {
     redirectToReferrer: false,
   });
 
-  const [units, setUnits] = useState([]);
+  // const [units, setUnits] = useState([]);
 
-  const loadUnits = () => {
-    axios
-      .get("http://localhost:8000/api/unit")
-      .then((response) => {
-        setUnits(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const loadUnits = () => {
+  //   axios
+  //     .get("http://localhost:8000/api/unit")
+  //     .then((response) => {
+  //       setUnits(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -75,23 +75,23 @@ export default function SignUpForm() {
     var ErrorReason = "";
     if (data.name == "") {
       flag = false;
-      ErrorReason += "שם ריק \n";
+      ErrorReason += " שם ריק \n";
     }
     if (data.lastname == "") {
       flag = false;
-      ErrorReason += "שם משפחה ריק \n";
+      ErrorReason += " שם משפחה ריק \n";
     }
     if (data.personalnumber == "") {
       flag = false;
-      ErrorReason += "מס אישי ריק \n";
+      ErrorReason += " מס אישי ריק \n";
     }
     if (data.yhida == "") {
       flag = false;
-      ErrorReason += "יחידה ריקה \n";
+      ErrorReason += " יחידה ריקה \n";
     }
     if (data.cellphone == "") {
       flag = false;
-      ErrorReason += "טלפון ריק \n";
+      ErrorReason += " טלפון ריק \n";
     }
     // else{
     //   if(Number(data.cellphone)[0] !== '0'){
@@ -101,17 +101,34 @@ export default function SignUpForm() {
     // }
     if (data.typevent == "בחר") {
       flag = false;
-      ErrorReason += "סוג אירוע ריק \n";
+      ErrorReason += " סוג אירוע ריק \n";
     }
     //document.getElementById("myText").value
     if (data.mikom == "") {
       flag = false;
-      ErrorReason += "מיקום ריק \n";
+      ErrorReason += " מיקום ריק \n";
     }
     if (data.pirot == "") {
       flag = false;
-      ErrorReason += "פירוט ריק \n";
+      ErrorReason += "  פירוט ריק \n";
     }
+    if (!data.datevent) {
+      flag = false;
+      ErrorReason += "תאריך ריק \n";
+    }
+
+    if (document.getElementById("upfile").files.length === 0) {
+      flag = false;
+      ErrorReason += "מסמך תחקיר ריק \n";
+    }
+
+    if (document.getElementById("sel").options[document.getElementById("sel").selectedIndex].value == 'בחר') {
+      flag = false;
+      ErrorReason += " סוג אירוע ריק \n";
+    }
+
+
+
 
     // if (data.password == "") {
     //   flag = false;
@@ -133,25 +150,26 @@ export default function SignUpForm() {
     // }
 
     if (flag == true) {
-      FixUser(event);
+      // FixUser(event);
+          SignUp(event);
     } else {
       toast.error(ErrorReason);
     }
   };
 
-  const FixUser = (event) => {
-    event.preventDefault();
-    if (data.role === "0") {
-      delete data.unitid;
-    }
-    if (data.role === "1") {
+  // const FixUser = (event) => {
+  //   event.preventDefault();
+  //   if (data.role === "0") {
+  //     delete data.unitid;
+  //   }
+  //   if (data.role === "1") {
 
-    }
-    if (data.role === "2") {
-      delete data.unitid;
-    }
-    SignUp(event);
-  };
+  //   }
+  //   if (data.role === "2") {
+  //     delete data.unitid;
+  //   }
+  //   SignUp(event);
+  // };
 
   const SignUp = (event) => {
     event.preventDefault();
@@ -225,9 +243,9 @@ export default function SignUpForm() {
     </div>
   );
 
-  useEffect(() => {
-    loadUnits();
-  }, []);
+  // useEffect(() => {
+  //   loadUnits();
+  // }, []);
 
   useEffect(() => {
     setData({ ...data, password: data.personalnumber });
@@ -242,16 +260,16 @@ export default function SignUpForm() {
               <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
                   <big>שליחת דיווח</big>
-                </div>
-                <div className="text-center text-muted mb-4">
+              </div>
+              <div className="text-center text-muted mb-4">
                   <small>פרטי מדווח</small>
-                </div>
+              </div>
                 <Form role="form">
                   <FormGroup dir="rtl">
                     <Input
                       placeholder="שם פרטי"
                       name="name"
-                      type="string"
+                      type="text"
                       value={data.name}
                       onChange={handleChange}
                     />
@@ -261,7 +279,7 @@ export default function SignUpForm() {
                     <Input
                       placeholder="שם משפחה"
                       name="lastname"
-                      type="string"
+                      type="text"
                       value={data.lastname}
                       onChange={handleChange}
                     />
@@ -305,7 +323,7 @@ export default function SignUpForm() {
 
                   <div style={{ textAlign: 'right', paddingTop: '10px' }}>סוג אירוע</div>
                     <FormGroup >
-                      <Input placeholder="סוג אירוע" type="select" name="typevent" value={data.typevent} onChange={handleChange}>
+                      <Input placeholder="סוג אירוע" type="select" name="typevent" value={data.typevent} onChange={handleChange} id="sel">
                         <option value={"בחר"}>בחר</option>
                         <option value={"תאונתעבודה"}>תאונת עבודה</option>
                         <option value={"תאונתרכב"}>תאונת רכב</option>
@@ -350,6 +368,7 @@ export default function SignUpForm() {
                       placeholder="צירוף מסמך של התחקיר"
                       name="tahkirFile"
                       type="file"
+                      id="upfile"
                       value={data.tahkirFile}
                       onChange={handleChange}
                       accept=".pdf, .doc, .docx, .txt, .xls"
@@ -448,9 +467,9 @@ export default function SignUpForm() {
         <Row className="justify-content-center">
           <Col>
             {showLoading()}
+            {signUpForm()}
             {showSuccess()}
             {showError()}
-            {signUpForm()}
             {redirectUser()}
           </Col>
         </Row>
